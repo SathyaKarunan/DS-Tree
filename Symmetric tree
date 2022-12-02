@@ -1,0 +1,43 @@
+Question:
+101. Symmetric Tree
+Easy
+
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+Example 1:
+Input: root = [1,2,2,3,4,4,3]
+Output: true
+
+Example 2:
+Input: root = [1,2,2,null,3,null,3]
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 1000].
+-100 <= Node.val <= 100
+Follow up: Could you solve it both recursively and iteratively?
+
+
+
+Approach:
+
+Since it is going to be symmetric ,we pass left and right to symm function.
+We traverse left of one node and right of other node and do the vice versa.
+
+
+
+Code:
+class Solution {
+public:
+    bool symm(TreeNode* lft,TreeNode* rgt){
+    if(!lft && !rgt)return true;
+    if(!lft || !rgt)return false; 
+    if(lft->val!=rgt->val)return false;
+    return symm(lft->right,rgt->left)&&symm(lft->left,rgt->right);
+    }
+	
+    bool isSymmetric(TreeNode* root) {
+    return symm(root->left,root->right);   
+    }
+};
