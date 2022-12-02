@@ -1,0 +1,72 @@
+103. Binary Tree Zigzag Level Order Traversal
+Medium
+
+7699
+
+203
+
+Add to List
+
+Share
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[20,9],[15,7]]
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+Example 3:
+
+Input: root = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 2000].
+-100 <= Node.val <= 100
+
+APPROACH:
+1)The usual level order traversal
+2)We use a variable to identify whether to store in actual/reverse order
+3)Here zig is used,if true,values are stored in actual order
+4)If false,values are stored in reverse order
+
+Code:
+
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+    if(!root) return {};
+    vector<vector<int>>ans;
+    queue<TreeNode*>q;
+    q.push(root);
+    bool zig=true;
+        
+    while(!q.empty()){
+        int n=q.size();
+        vector<int>t(n);
+        int i=0;
+        
+        while(i<n){
+        TreeNode* curr=q.front(); 
+        q.pop();
+        int index=zig?i:n-1-i;
+        t[index]=curr->val;
+        if(curr->left)q.push(curr->left);
+        if(curr->right)q.push(curr->right);
+        i++;
+        }
+        
+        ans.push_back(t);
+        zig=!zig;
+    }
+    return ans;
+    }
+};
