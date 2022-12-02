@@ -52,9 +52,12 @@ public:
     inorder(root->left);
     if(prev&&root->val<prev->val){
     if(first==NULL){
+    //incorrect smaller node is always found as prev node         
+     //incorrect larger node is always found as curr node
         first=prev;
     }
         last=root;
+        
     }
     prev=root;
     inorder(root->right);
