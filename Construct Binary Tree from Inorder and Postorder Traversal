@@ -1,0 +1,58 @@
+106. Construct Binary Tree from Inorder and Postorder Traversal
+
+Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+Example 1:
+Input: inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+Output: [3,9,20,null,null,15,7]
+Example 2:
+
+Input: inorder = [-1], postorder = [-1]
+Output: [-1]
+ 
+
+Constraints:
+
+1 <= inorder.length <= 3000
+postorder.length == inorder.length
+-3000 <= inorder[i], postorder[i] <= 3000
+inorder and postorder consist of unique values.
+Each value of postorder also appears in inorder.
+inorder is guaranteed to be the inorder traversal of the tree.
+postorder is guaranteed to be the postorder traversal of the tree.
+
+Approach:
+Postorder-->left,right,node
+Inorder-->left,node,right
+
+1)So,traversing the postorder from end gives the node of tree and subtrees
+2)To find the right and left subtree of root,we find the index of root in inorder,
+nodes in the left contributes left subtree and nodes in the right contributes right subtree
+3)Note:We traverse postorder from the end which is LRN,so for recursion function,root->right occurs first then root->left
+
+Code:
+class Solution{
+public:
+   TreeNode* build(vector<int>&inorder,vector<int>&postorder,int &index,int left,int right)
+       {
+       
+        if(left>right)return NULL;
+        int ind=left;
+        while(postorder[index]!=inorder[ind])
+        {
+            ind++;
+        }
+        TreeNode* node= new TreeNode(postorder[index]);
+        index--;
+        node->right=build(inorder,postorder,index,ind+1,right);
+        node->left=build(inorder,postorder,index,left,ind-1);
+        
+        return node;
+    } 
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder)
+    {
+        int index=inorder.size()-1;
+        return build(inorder,postorder,index,0,inorder.size()-1);
+    }
+};
