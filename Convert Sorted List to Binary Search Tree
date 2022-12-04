@@ -1,0 +1,60 @@
+109. Convert Sorted List to Binary Search Tree
+
+Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree.
+
+Example 1:
+
+Input: head = [-10,-3,0,5,9]
+Output: [0,-3,9,-10,null,5]
+Explanation: One possible answer is [0,-3,9,-10,null,5], which represents the shown height balanced BST.
+Example 2:
+
+Input: head = []
+Output: []
+
+Constraints:
+
+The number of nodes in head is in the range [0, 2 * 104].
+-105 <= Node.val <= 105
+
+Approach:
+In this we use head and tail to keep track whether ran out of nodes
+For those, who are confused with the condition===> if(head==tail) return NULL, please go through this.
+
+If you notice,in the recursion function of subtrees,
+
+1)In thead->left= toBST(head,slow) , we are including slow,
+which is actually the node we added recently to the tree.In such case,if (head==slow),
+there is only one node in the list which we already included,so we return NULL
+
+2)In thead.right = toBST(slow.next,tail),here slow.next and tail can be null, in such case ,we return NULL.
+
+If you still dont understand,please go through below statement (credits:fei_fei)
+"For the toBST definition, we can consider it as a tree for [start, end) instead of [start, end], 
+which means end is already used before. Then when start == end, we know it is the termination"
+
+In each recursion we find the middle node using slow and fast ptr,the same procedure which we used in 'sorted array conversion'.
+
+
+Code:
+
+class Solution {
+public:
+    TreeNode* bst(ListNode* head,ListNode* tail){
+    if(head==tail)return NULL;
+    ListNode* slow=head;
+    ListNode* fast=head;
+    while(fast!=tail&&fast->next!=tail){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    TreeNode* node= new TreeNode(slow->val);
+    node->left=bst(head,slow);
+    node->right=bst(slow->next,tail);
+    return node;
+    }
+    TreeNode* sortedListToBST(ListNode* head) {
+    return bst(head,NULL);   
+    
+    }
+};
